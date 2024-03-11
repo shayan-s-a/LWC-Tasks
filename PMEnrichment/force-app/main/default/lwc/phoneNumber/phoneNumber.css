@@ -1,0 +1,25 @@
+.slds-table {
+    overflow-y: scroll;
+    overflow-x: scroll;
+    height: fit-content;
+    max-height: 66.4vh;
+    overflow: auto;
+
+    margin-top: 22px;
+    
+    margin: 15px;
+    padding-bottom: 20px;
+}
+
+.slds-table th, .slds-table td {
+    text-align: left;
+    padding: 0.5rem;
+    /* padding-right: 5rem; */
+    white-space: nowrap;
+	/* width: 50%; */
+}
+
+.slds-table th {
+    font-weight: bold;
+    background-color: #f2f2f2;
+}

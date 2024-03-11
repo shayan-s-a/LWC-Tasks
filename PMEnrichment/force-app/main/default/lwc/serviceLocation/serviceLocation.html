@@ -1,0 +1,168 @@
+<template>
+    <div class="slds-table slds-table_cell-buffer slds-table_bordered">
+    <table class="sortable">
+        <thead>
+            <tr>
+                <th onclick={handleSort} data-column="Name" scope="col">Location Name
+                    <template if:true={sortByName}>
+                        <lightning-icon size='xx-small' icon-name={sortIconName}></lightning-icon>
+                    </template>
+                </th>
+                <th onclick={handleSort} data-column="location address" scope="col">Location Address</th>
+                <th onclick={handleSort} data-column="shipping location" scope="col">Shipping Location</th>
+                <th onclick={handleSort} data-column="time zone" scope="col">Time Zone</th>
+                <th onclick={handleSort} data-column="new construction" scope="col">New Construction</th>
+                <th onclick={handleSort} data-column="contact name" scope="col">Contact Name</th>
+                <th onclick={handleSort} data-column="contact email" scope="col">Contact Email</th>
+                <th onclick={handleSort} data-column="contact phone" scope="col">Contact Phone</th>
+                <th onclick={handleSort} data-column="caller name" scope="col">Caller ID Name</th>
+                <th onclick={handleSort} data-column="custom music" scope="col">Custom Music</th>
+                <th onclick={handleSort} data-column="location name" scope="col">Expand</th>
+            </tr>
+        </thead>
+        <tbody>
+            <template for:each={data} for:item="sl">
+                <tr key={sl.Id}>
+                    <td>{sl.Name}</td>
+                    <td>{sl.Location_Address__Street__s} {sl.Location_Address__City__s} {sl.Location_Address__CountryCode__s} {sl.Location_Address__PostalCode__s}</td>
+                    <td>
+                        <lightning-combobox
+                            name="shipping location"
+                            value={sl.Shipping_Location__c}
+                            placeholder="Select Shipping Location"
+                            options={shippingOptions}
+                            onchange={handleChange}
+                            data-id={sl.Id}></lightning-combobox>
+                    </td>
+                    <!-- <td>{sl.Time_Zone__c}</td> -->
+                    <td>
+                        <lightning-combobox
+                            name="time zone"
+                            value={sl.Time_Zone__c}
+                            placeholder="Select Time Zone"
+                            options={timezoneOptions}
+                            onchange={handleChange} 
+                            data-id={sl.Id}>
+                        </lightning-combobox>
+                    </td>
+                    <!-- <td>{sl.New_Construction__c}</td> -->
+                    <td>
+                        <lightning-combobox
+                            name="new construction"
+                            value={sl.New_Construction__c}
+                            placeholder="Select Construction"
+                            options={constructionOptions}
+                            onchange={handleChange} 
+                            data-id={sl.Id}>
+                        </lightning-combobox>
+                    </td>
+                    <td>{sl.Contact_Name__c}</td>
+                    <td>{sl.Contact_Email__c}</lightning-input></td>
+                    <td>{sl.Contact_Phone__c}</td>
+                    <td>{sl.Caller_ID_Name__c}</lightning-input></td>
+                    <!-- <td>{sl.Custom_Music__c}</td> -->
+                    <td>
+                        <lightning-combobox
+                            name="Custom Music"
+                            value={sl.Custom_Music__c}
+                            placeholder="Select Custom Music"
+                            options={customMusicOptions}
+                            onchange={handleChange} 
+                            data-id={sl.Id}>
+                        </lightning-combobox>
+                    </td>
+                    <td>
+                        <!-- <button disabled={disableExpand} onclick={handleExpand} data-value={sl.Id} class="slds-button slds-button_icon" title="Expand">
+                            <lightning-icon icon-name='utility:edit' alternative-text='custom83' size='medium' title='Expand' class={getIconClass}></lightning-icon>
+                        </button> -->
+                        <button disabled={sl.Expand} onclick={handleExpand} data-value={sl.Id} class="slds-button slds-button_icon" title="Expand">
+                            <lightning-icon icon-name='utility:edit' alternative-text='custom83' size='medium' title='Expand' class={sl.iconClass}></lightning-icon>
+                        </button>
+                    </td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+    <template lwc:if={openModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+             <!-- modal header start -->
+               <header class="slds-modal__header">
+                  <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleExpand}>
+                     <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                     <span class="slds-assistive-text">Close</span>
+                  </button>
+                  <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Additional Information</h2>
+               </header>
+           
+               <!-- modal body start -->
+               <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <template if:true={getShipping}>
+                                <!-- Your other elements go here -->
+                                <!-- <lightning-input type="text" label="Street"></lightning-input>
+                                <lightning-input type="text" label="City"></lightning-input>
+                                <lightning-input type="text" label="Country"></lightning-input>
+                                <lightning-input type="text" label="Zip Code"></lightning-input> -->
+
+                                <lightning-input-address
+                                    address-label="Address"
+                                    street-label="Street"
+                                    city-label="City"
+                                    country-label="Country"
+                                    province-label="Province"
+                                    postal-code-label="Postal Code"
+                                    street={street}
+                                    city={city}
+                                    country={country}
+                                    province={province}
+                                    postal-code={postalcode}
+                                    required
+                                    onchange={handleAddress} ></lightning-input-address>
+                        </template>
+                        
+                        <template if:true={getConstruction}>
+                                <!-- Input field -->
+                                <!-- <lightning-input type="text" label="Construction Details"></lightning-input> -->
+                                <lightning-textarea
+                                    label="Construction Details"
+                                    placeholder="Type here..."
+                                    value={constructValue}
+                                    onchange={handleTextChange}>
+                                </lightning-textarea>
+                        </template>
+               </div>
+               
+     
+               <!-- modal footer start-->
+               <footer class="slds-modal__footer">
+                  <button class="slds-button slds-button_brand" onclick={handleSaveExpand}>Save</button>
+                  <button class="slds-button slds-button_neutral" onclick={handleExpand}>Cancel</button>
+               </footer>
+            
+            </div>
+         </section>
+         <div class="slds-backdrop slds-backdrop_open"></div>
+        <!-- <lightning-modal-header label="My Modal Heading"></lightning-modal-header>
+        <lightning-modal-body> Body </lightning-modal-body>
+        <lightning-modal-footer>
+            <lightning-button label="Close" onclick={handleExpand}></lightning-button>
+        </lightning-modal-footer> -->
+    </template>
+    <!-- Cancel and Save buttons -->
+    
+</div>
+<template if:true={musicMessage}>
+    <div style="color: red;">
+        Remember to upload the customer’s Music on Hold file(s) to the Salesforce order. The file(s) MUST be 
+        provided as a Mono,16 Mega-Hertz, 16-bit PCM .wav file(s) for upload into the UCF service. 
+        There can be no more than 10 separate customer Music on Hold files, and their combined size must be less than 20 Mega-Bytes.
+    </div>
+</template>
+<div class="slds-m-top_medium slds-text-align_center">
+    <lightning-button class="slds-p-around_xx-small" variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+    <lightning-button class="slds-p-around_xx-small" variant="brand" label="Save" onclick={handleSave}></lightning-button>
+</div>
+</template>

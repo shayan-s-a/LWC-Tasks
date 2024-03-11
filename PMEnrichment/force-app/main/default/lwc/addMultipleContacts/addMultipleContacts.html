@@ -1,0 +1,56 @@
+<template>
+    <div class="slds-modal__header slds-text-heading_large">
+        Create Multiple Contacts
+    </div>
+
+    <div class="slds-modal__content">
+        <table>
+            <thead>
+                <th class="slds-p-around_small">First Name</th>
+                <th class="slds-p-around_small">Last Name</th>
+                <th class="slds-p-around_small">Email</th>
+                <th class="slds-p-around_small">Date of Birth</th>
+                <th class="slds-p-around_small">
+                    <lightning-button-icon 
+                    icon-name="utility:add"
+                    alternative-text="Add"
+                    onclick={handleAdd}>
+                    </lightning-button-icon>
+                </th>
+            </thead>
+
+            <tbody>
+                <template for:each={contactList} for:item="contacts">
+                    <tr key={contacts.id}>
+                        <td>
+                            <lightning-input data-id={contacts.id} type="text" placeholder="Enter First Name" name="firstName" onchange={handleInput} onblur={handleValue}></lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input data-id={contacts.id} type="text" placeholder="Enter Last Name" name="lastName" onchange={handleInput} onblur={handleValue}></lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input data-id={contacts.id} type="email" placeholder="Enter Email" name="email" onchange={handleInput} onblur={handleValue}></lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input data-id={contacts.id} type="date" placeholder="Select Date" name="date" onchange={handleInput} onblur={handleValue}></lightning-input>
+                        </td>
+                        <td>
+                            <lightning-button-icon
+                            data-id={contacts.id}
+                            class="delete-button" 
+                            icon-name="utility:delete"
+                            alternative-text="Delete"
+                            onclick={handleDelete}>
+                            </lightning-button-icon>
+                        </td>
+                    </tr>
+                </template>
+                
+            </tbody>
+        </table>
+    </div>
+
+    <div class="slds-modal__footer">
+        <lightning-button variant="brand" label="Save" onclick={handleSave}></lightning-button>
+    </div>
+</template>

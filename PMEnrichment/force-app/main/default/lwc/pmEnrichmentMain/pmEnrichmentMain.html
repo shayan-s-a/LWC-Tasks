@@ -1,0 +1,75 @@
+<template>
+    <div>
+        <div class="slds-tabs_default">
+                <ul class="slds-tabs_default__nav" role="tablist">
+                        <li class={tab1Class} title="Item One" role="presentation">
+                                <a onclick={handleSelectedTab} data-tab="tab1" class="slds-tabs_default__link" role="tab">Service Location</a>
+                        </li>
+                        <li class={tab2Class} title="Item Two" role="presentation">
+                                <a onclick={handleSelectedTab} data-tab="tab2" class="slds-tabs_default__link" role="tab">Phone Numbers</a>
+                        </li>
+                        <li class={tab3Class} title="Item One" role="presentation">
+                                <a onclick={handleSelectedTab} data-tab="tab3" class="slds-tabs_default__link" role="tab">Employee Information</a>
+                        </li>
+                        <li class={tab4Class} title="Item Two" role="presentation">
+                                <a onclick={handleSelectedTab} data-tab="tab4" class="slds-tabs_default__link" role="tab">Auto Attendant</a>
+                        </li>
+                        <li class={tab5Class} title="Item One" role="presentation">
+                                <a onclick={handleSelectedTab} data-tab="tab5" class="slds-tabs_default__link" role="tab">Multi Line Hunting Group</a>
+                        </li>
+                        <li class={tab6Class} title="Item Two" role="presentation">
+                                <a onclick={handleSelectedTab} data-tab="tab6" class="slds-tabs_default__link" role="tab">General Voice Mail</a>
+                        </li>
+                        <li class="slds-tabs_default__item slds-tabs_default__overflow-button" title="More Tabs" role="presentation">
+                                <div class={dropdownClass}>
+                                        <button onclick={handleDropdown} class="slds-button" aria-haspopup="true">More
+                                                <!-- <svg class="slds-button__icon" aria-hidden="true">
+                                                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                                                </svg> -->
+                                        </button>
+                                        <div class="slds-dropdown slds-dropdown_left">
+                                                <ul class="slds-dropdown__list slds-dropdown_length-with-icon-10" role="menu">
+                                                        <li class="slds-dropdown__item" role="presentation">
+                                                                <a onclick={handleSelectedTab} data-tab="tab7" role="menuitem">
+                                                                        <span class="slds-truncate" title="Customization Notes">Customization Notes</span>
+                                                                </a>
+                                                        </li>
+                                                        <li class="slds-dropdown__item" role="presentation">
+                                                                <a onclick={handleSelectedTab} data-tab="tab8"  role="menuitem">
+                                                                                <span class="slds-truncate" title="Page Groups">Page Groups</span>
+                                                                </a>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                </div>
+                        </li>
+                </ul>
+                <div>
+                        <template if:true={tab1Selected}>
+                                <c-service-location record-id={recordId}></c-service-location>
+                        </template>
+                        <template if:true={tab2Selected}>
+                                <c-phone-number record-id={recordId}></c-phone-number>
+                        </template>
+                        <template if:true={tab3Selected}>
+                                <c-employee-information record-id={recordId}></c-employee-information>
+                        </template>
+                        <template if:true={tab4Selected}>
+                                Auto Attendant
+                        </template>
+                        <template if:true={tab5Selected}>
+                                Multi Line Group Hunting
+                        </template>
+                        <template if:true={tab6Selected}>
+                                General Voice Mail
+                        </template>
+                        <template if:true={tab7Selected}>
+                                Customization Notes
+                        </template>
+                        <template if:true={tab8Selected}>
+                                Page Groups
+                        </template>
+                </div>
+        </div>
+    </div>
+</template>

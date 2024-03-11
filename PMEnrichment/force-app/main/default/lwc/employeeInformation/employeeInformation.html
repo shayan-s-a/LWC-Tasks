@@ -1,0 +1,123 @@
+<template>
+    <lightning-card>
+        <lightning-combobox 
+        style="width: 200px;"
+            name="table type"
+            label="Select view"
+            value={value}
+            placeholder="Select value"
+            options={tableOptions}
+            onchange={handleOptions}>
+        </lightning-combobox>
+    </lightning-card>
+
+    <div class="slds-table slds-cell_buffer slds-table_bordered">
+        <table>
+            <thead>
+                <th>Phone Number</th>
+                <th>Extension</th>
+                <th>User Name</th>
+                <template if:true={checkEmployee}>
+                    <th>Email</th>
+                    <th>User Admin</th>
+                    <th>Department</th>
+                    <th>Outbound Caller ID</th>
+                </template>
+                <template if:true={checkLicense}>
+                    <th>License Type</th>
+                    <th>Dial Plan Information</th>
+                    <th>Collaboration</th>
+                    <th>Webinar</th>
+                    <th>Call Recording</th>
+                    <th>Audio Mining</th>
+                    <th>Screen Recording</th>
+                    <th>Storage</th>
+                </template>
+                <template if:true={checkDevice}>
+                    <th>Device Type</th>
+                    <th>Device Accessories</th>
+                </template>
+                <template if:true={check911}>
+                    <th>Company Name</th>
+                    <th>Address Number</th>
+                    <th>Street Name</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip Code</th>
+                    <th>Identifying Location</th>
+                </template>
+            </thead>
+            <tbody>
+                <template for:each={data} for:item="ei">
+                    <tr key={ei.Id}>
+                        <td>{ei.Phone_Number__c}</td>
+                        <!-- <td>{ei.Extension__c}</td> -->
+                        <td>
+                            <lightning-input type="text" name="Extension" value={ei.Extension__c} data-id={ei.Id} onchange={handleInput}></lightning-input>
+                        </td>
+                        <!-- <td>{ei.User_Name__c}</td> -->
+                        <td>
+                            <lightning-input type="text" name="User Name" value={ei.User_Name__c} data-id={ei.Id} onchange={handleInput} onblur={checkDuplicate}></lightning-input>
+                        </td>
+                        <template if:true={checkEmployee}>
+                            <!-- <td>{ei.Email__c}</td> -->
+                            <td>
+                                <lightning-input type="email" name="Email" value={ei.Email__c} data-id={ei.Id} onchange={handleInput2}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-combobox 
+                                name="User Admin"
+                                value={ei.User_Admin__c}
+                                options={userAdmin}
+                                onchange={handleInput2}
+                                data-id={ei.Id}></lightning-combobox>
+                            </td>
+                            <td>
+                                <lightning-input type="text" name="Department" value={ei.Department__c} data-id={ei.Id} onchange={handleInput2}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-combobox 
+                                name="Outbound Caller ID"
+                                value={ei.Outbound_Caller_ID__c}
+                                options={callerOutbound}
+                                onchange={handleInput2}
+                                data-id={ei.Id}></lightning-combobox>
+                            </td>
+                        </template>
+
+                        <template if:true={checkLicense}>
+                            <td>{ei.License_Type__c}</td>
+                            <td>{ei.Dial_Plan__c}</td>
+                            <td>{ei.Collaboration__c}</td>
+                            <td>{ei.Webinar__c}</td>
+                            <td>{ei.Call_Recording__c}</td>
+                            <td>{ei.Audio_Mining__c}</td>
+                            <td>{ei.Screen_Recording__c}</td>
+                            <td>{ei.Storage__c}</td>
+                        </template>
+
+                        <template if:true={checkDevice}>
+                            <td>{ei.Device_Type__c}</td>
+                            <td>{ei.Device_Accessories__c}</td>
+                        </template>
+
+                        <template if:true={check911}>
+                            <td>{ei.Company_Name__c}</td>
+                            <td>{ei.Address_Number__c}</td>
+                            <td>{ei.Street_Name__c}</td>
+                            <td>{ei.City__c}</td>
+                            <td>{ei.State__c}</td>
+                            <td>{ei.Zip_Code__c}</td>
+                            <td>{ei.Identifying_Location__c}</td>
+                        </template>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="slds-text-align_center slds-p-around_medium">
+        <lightning-button class="slds-p-around_xx-small" variant="neutral" label="Cancel"></lightning-button>
+        <lightning-button class="slds-p-around_xx-small" variant="brand" label="Save"></lightning-button>
+    </div>
+</template>
